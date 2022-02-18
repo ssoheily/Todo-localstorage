@@ -10,9 +10,11 @@ function addTodo(event) {
     } else {
       //  createLI(valueInput);
       inputText.value = "";
+
       let objItem = {
         id: arrayLocaleStorage.length + 1,
         task: valueInput,
+        statusTask: true,
       };
       arrayLocaleStorage.push(objItem);
       setValuelocaleStorage(arrayLocaleStorage);
@@ -62,8 +64,8 @@ function createLI(valuesFromStorage) {
     newIconEle1.className = "fa fa-cut";
     newbtnCut.appendChild(newIconEle1);
     /* click button remove : item = event */
-    newbtnCut.addEventListener("click", (item) => {
-      removeItemCompelte(item.target.parentElement.parentElement.textContent);
+    newbtnCut.addEventListener("click", (item1) => {
+      removeItemCompelte(item1.target.parentElement.parentElement.textContent);
     });
     /* button > i 'edit' */
     let newbtnEdit = $.createElement("button");
@@ -72,9 +74,8 @@ function createLI(valuesFromStorage) {
     newIconEle2.className = "fa fa-edit";
     newbtnEdit.appendChild(newIconEle2);
     /* click button Edit : item = event */
-    newbtnEdit.addEventListener("click", (item) => {
-      removeItemCompelte(item.target.parentElement.parentElement.textContent);
-      
+    newbtnEdit.addEventListener("click", (item2) => {
+      removeItemCompelte(item2.target.parentElement.parentElement.textContent);
     });
     /* button > i 'check' */
     let newbtnCheck = $.createElement("button");
@@ -83,11 +84,29 @@ function createLI(valuesFromStorage) {
     newIconEle3.className = "fa fa-check-circle";
     newbtnCheck.appendChild(newIconEle3);
     /* click button Check : item = event */
-    newbtnCheck.addEventListener("click", (item) => {
-      removeItemCompelte(item.target.parentElement.parentElement.textContent);
-      
+    newbtnCheck.addEventListener("click", (item3) => {
+      let boxInfoFromStorage = JSON.parse(localStorage.getItem("boxStorage"));
+      let itemCheck=item3.target.parentElement.parentElement;    
+      console.log(itemCheck);
+        /* find check item from local storage */
+        let indexItemcheck=boxInfoFromStorage.findIndex((selectItem2)=>{
+          return selectItem2.task===itemCheck.textContent;
+        })
+      if(boxInfoFromStorage[indexItemcheck].statusTask){
+        /* deativ button */
+        itemCheck.classList.add("main-showList__deactive");
+        /* change status in locale storage */
+        boxInfoFromStorage[indexItemcheck].statusTask=false;
+       
+      }
+      else{
+        // change status in locale storage *
+        boxInfoFromStorage[indexItemcheck].statusTask=true;
+        itemCheck.classList.remove("main-showList__deactive");
+      }
+      console.log( boxInfoFromStorage);
+      setValuelocaleStorage( boxInfoFromStorage);
     });
-
     newDivEle.innerHTML = object.task;
 
     /* append div and 3 button to li */

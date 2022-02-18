@@ -95,6 +95,12 @@
     align-items: center;
   
 }
+.main-showList__deactive{
+        text-decoration: line-through;
+        opacity: .4;
+        font-size: 25px;
+}
+
 .newsletter__txt {
     border: none;
     outline: none;
