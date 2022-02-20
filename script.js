@@ -1,6 +1,10 @@
 let $ = document;
 let inputText = $.querySelector(".main-inputDiv_input");
 let ul_ContainerElement = $.querySelector(".main-showList__ul");
+let input_modaltext = $.querySelector(".modal-text__edit");
+let input_Confirm = $.querySelector(".confirms");
+let close_modalClass = $.querySelector(".modal");
+
 let arrayLocaleStorage = [];
 function addTodo(event) {
   if (event.keyCode == 13) {
@@ -46,7 +50,27 @@ function removeItemCompelte(selectedItem) {
   setValuelocaleStorage(boxInfoFromStorage);
   getInfoLoclastorage();
 }
-inputText.addEventListener("keydown", addTodo);
+function modalfunc() {
+  // Get the modal
+  var modal = document.getElementById("myModal");
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks the button-edit, open the modal
+  modal.style.display = "block";
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+}
 function createLI(valuesFromStorage) {
   ul_ContainerElement.innerHTML = "";
   valuesFromStorage.forEach((object) => {
@@ -73,9 +97,27 @@ function createLI(valuesFromStorage) {
     let newIconEle2 = $.createElement("i");
     newIconEle2.className = "fa fa-edit";
     newbtnEdit.appendChild(newIconEle2);
-    /* click button Edit : item = event */
+    /* click button Edit : item = event  that opens the modal*/
     newbtnEdit.addEventListener("click", (item2) => {
-      removeItemCompelte(item2.target.parentElement.parentElement.textContent);
+      modalfunc();
+      /* get text from localStrage */
+      let itemCheckText = item2.target.parentElement.parentElement.textContent;
+      /* find check item from local storage */
+      let boxInfoFromStorage2 = JSON.parse(localStorage.getItem("boxStorage"));
+      //  console.log(boxInfoFromStorage2);
+      let indexItem2check = boxInfoFromStorage2.findIndex((selectItem2) => {
+        return selectItem2.task === itemCheckText;
+      });
+      /* show value items in modal  */
+      input_modaltext.value = itemCheckText;
+      input_Confirm.addEventListener("click", () => {
+        let newTask = input_modaltext.value;
+        boxInfoFromStorage2[indexItem2check].task = newTask;
+        setValuelocaleStorage(boxInfoFromStorage2);
+        close_modalClass.style.display = "none";
+        /* show  locale Storage*/
+        getInfoLoclastorage();
+      });
     });
     /* button > i 'check' */
     let newbtnCheck = $.createElement("button");
@@ -86,27 +128,32 @@ function createLI(valuesFromStorage) {
     /* click button Check : item = event */
     newbtnCheck.addEventListener("click", (item3) => {
       let boxInfoFromStorage = JSON.parse(localStorage.getItem("boxStorage"));
-      let itemCheck=item3.target.parentElement.parentElement;    
-      console.log(itemCheck);
-        /* find check item from local storage */
-        let indexItemcheck=boxInfoFromStorage.findIndex((selectItem2)=>{
-          return selectItem2.task===itemCheck.textContent;
-        })
-      if(boxInfoFromStorage[indexItemcheck].statusTask){
+      let itemCheck = item3.target.parentElement.parentElement;
+      /* find check item from local storage */
+      let indexItemcheck = boxInfoFromStorage.findIndex((selectItem3) => {
+        return selectItem3.task === itemCheck.textContent;
+      });
+      if (boxInfoFromStorage[indexItemcheck].statusTask) {
         /* deativ button */
         itemCheck.classList.add("main-showList__deactive");
         /* change status in locale storage */
-        boxInfoFromStorage[indexItemcheck].statusTask=false;
-       
-      }
-      else{
+        boxInfoFromStorage[indexItemcheck].statusTask = false;
+        /* deaktive edit and cut -button */
+        newbtnEdit.disabled = true;
+        newbtnCut.disabled = true;
+        newbtnCheck.style.background = "pink";
+      } else {
         // change status in locale storage *
-        boxInfoFromStorage[indexItemcheck].statusTask=true;
+        boxInfoFromStorage[indexItemcheck].statusTask = true;
         itemCheck.classList.remove("main-showList__deactive");
+        /* aktive edit and cut -button */
+        newbtnEdit.disabled = false;
+        newbtnCut.disabled = false;
+        newbtnCheck.style.background = "#2f5bea";
       }
-      console.log( boxInfoFromStorage);
-      setValuelocaleStorage( boxInfoFromStorage);
+      setValuelocaleStorage(boxInfoFromStorage);
     });
+    /* object is from keydown => line 52 */
     newDivEle.innerHTML = object.task;
 
     /* append div and 3 button to li */
@@ -115,5 +162,11 @@ function createLI(valuesFromStorage) {
     ul_ContainerElement.append(newLiEle);
   });
 }
+function saveDate(indexItem2check) {
+  let newTask = input_modaltext.value;
+  boxInfoFromStorage2[indexItem2check].task = newTask;
+  setValuelocaleStorage(boxInfoFromStorage2);
+}
 
+inputText.addEventListener("keydown", addTodo);
 window.addEventListener("load", getInfoLoclastorage());
