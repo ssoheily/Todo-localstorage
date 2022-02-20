@@ -50,27 +50,31 @@ function removeItemCompelte(selectedItem) {
   setValuelocaleStorage(boxInfoFromStorage);
   getInfoLoclastorage();
 }
-function modalfunc() {
+function showModal() {
   // Get the modal
-  var modal = document.getElementById("myModal");
+  var modal = document.querySelector(".modal");
   // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
+  var x_span = document.querySelector(".close");
 
   // When the user clicks the button-edit, open the modal
   modal.style.display = "block";
 
   // When the user clicks on <span> (x), close the modal
-  span.onclick = function () {
+  x_span.onclick = function () {
     modal.style.display = "none";
+    // $.body.style.filter="blur(10px)";
   };
 
   // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function (event) {
-    if (event.target == modal) {
+  document.body.addEventListener("keyup",hideenModalwithESC);
+  function hideenModalwithESC(event) {
+    if (event.keyCode == 27) {
       modal.style.display = "none";
     }
   };
+  
 }
+
 function createLI(valuesFromStorage) {
   ul_ContainerElement.innerHTML = "";
   valuesFromStorage.forEach((object) => {
@@ -99,7 +103,7 @@ function createLI(valuesFromStorage) {
     newbtnEdit.appendChild(newIconEle2);
     /* click button Edit : item = event  that opens the modal*/
     newbtnEdit.addEventListener("click", (item2) => {
-      modalfunc();
+      showModal();
       /* get text from localStrage */
       let itemCheckText = item2.target.parentElement.parentElement.textContent;
       /* find check item from local storage */
@@ -170,3 +174,4 @@ function saveDate(indexItem2check) {
 
 inputText.addEventListener("keydown", addTodo);
 window.addEventListener("load", getInfoLoclastorage());
+
