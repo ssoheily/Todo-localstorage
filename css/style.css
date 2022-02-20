@@ -45,10 +45,11 @@
     text-align: center;
 }
 
-.modal-text__edit{
+.modal-text__edit {
     min-width: 50%;
     line-height: 2rem;
 }
+
 /* The Close Button */
 .close {
     float: right;
@@ -111,20 +112,41 @@
 }
 
 .main-inputDiv {
-    /* background-color: rgb(13, 240, 164, .8); */
     height: 50px;
     display: flex;
     justify-content: center;
     margin: 20px;
+    align-items: center;
+}
 
+
+.main-inputDiv_counter {
+    background-color: lightgray;
+    color: #000;
+    width: 55px;
+    height: 70%;
+    text-align:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    padding: 2px 2px;
+    border: 2px solid  #0b0b9e;
+    font-weight: bold;
+    margin-left:.19rem ;
+    border-radius: 10%;
+    box-shadow: 1px 1px 1px 5px gainsboro;
 }
 
 .main-inputDiv_input {
-    border-radius: 8%;
+    /* border-radius: 8%; */
     margin: .7rem 0 .4rem 0;
     background-color: lightgray;
     color: rgba(87, 79, 86, 0.7);
     width: 300px;
+    height: 70%;
+
+   
 }
 
 .main-showList {

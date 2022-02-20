@@ -5,6 +5,9 @@ let input_modaltext = $.querySelector(".modal-text__edit");
 let input_Confirm = $.querySelector(".confirms");
 let close_modalClass = $.querySelector(".modal");
 let mainClass = $.querySelector(".main");
+let span_inputDiv_counter = $.querySelector(".main-inputDiv_counter");
+let inputMaxLength=inputText.getAttribute("maxlength");// 30
+
 
 
 let arrayLocaleStorage = [];
@@ -34,6 +37,7 @@ function setValuelocaleStorage(arrayLocaleStorage) {
   localStorage.setItem("boxStorage", jsonLocalSotrage);
 }
 function getInfoLoclastorage() {
+  inputText.value="";
   let boxInfoFromStorage = JSON.parse(localStorage.getItem("boxStorage"));
   if (boxInfoFromStorage) {
     arrayLocaleStorage = boxInfoFromStorage;
@@ -122,6 +126,7 @@ function createLI(valuesFromStorage) {
       });
       /* show value items in modal  */
       input_modaltext.value = itemCheckText;
+      /* for submit , need form in  index.HTML */
       input_Confirm.addEventListener("click", () => {
         let newTask = input_modaltext.value;
         boxInfoFromStorage2[indexItem2check].task = newTask;
@@ -129,7 +134,7 @@ function createLI(valuesFromStorage) {
         close_modalClass.style.display = "none";
         /* show  locale Storage*/
         getInfoLoclastorage();
-        /*  deaktive blur*/
+        /*  deaktive*/
         mainClass.style.filter="blur(0px)";
 
       });
@@ -185,4 +190,7 @@ function saveDate(indexItem2check) {
 
 inputText.addEventListener("keydown", addTodo);
 window.addEventListener("load", getInfoLoclastorage());
+inputText.addEventListener('keyup', function () {
+  span_inputDiv_counter.innerHTML = inputMaxLength - inputText.value.length // 15
+})
 
