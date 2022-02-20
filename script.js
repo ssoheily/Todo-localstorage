@@ -4,6 +4,8 @@ let ul_ContainerElement = $.querySelector(".main-showList__ul");
 let input_modaltext = $.querySelector(".modal-text__edit");
 let input_Confirm = $.querySelector(".confirms");
 let close_modalClass = $.querySelector(".modal");
+let mainClass = $.querySelector(".main");
+
 
 let arrayLocaleStorage = [];
 function addTodo(event) {
@@ -58,18 +60,24 @@ function showModal() {
 
   // When the user clicks the button-edit, open the modal
   modal.style.display = "block";
-
+  mainClass.style.filter="blur(10px)";
+  
   // When the user clicks on <span> (x), close the modal
   x_span.onclick = function () {
     modal.style.display = "none";
-    // $.body.style.filter="blur(10px)";
+    mainClass.style.filter="blur(0px)";
+    
+    
   };
-
+  
   // When the user clicks anywhere outside of the modal, close it
+ 
   document.body.addEventListener("keyup",hideenModalwithESC);
   function hideenModalwithESC(event) {
     if (event.keyCode == 27) {
       modal.style.display = "none";
+      mainClass.style.filter="blur(0px)";
+
     }
   };
   
@@ -121,6 +129,9 @@ function createLI(valuesFromStorage) {
         close_modalClass.style.display = "none";
         /* show  locale Storage*/
         getInfoLoclastorage();
+        /*  deaktive blur*/
+        mainClass.style.filter="blur(0px)";
+
       });
     });
     /* button > i 'check' */
